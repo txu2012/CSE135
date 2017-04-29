@@ -96,7 +96,7 @@
 			
 			try{
 				try{
-					if(request.getParameter("name") != "" || request.getParameter("age") != ""){
+					if(request.getParameter("name") != "" && request.getParameter("age") != ""){
 						pname = request.getParameter("name");
 						ageCheck = request.getParameter("age");
 						role = request.getParameter("role"); 

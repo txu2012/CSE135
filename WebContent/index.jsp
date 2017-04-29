@@ -11,6 +11,14 @@
 				PrintWriter writer = response.getWriter();
 				out.println(session.getAttribute("msg"));
 			}
+			else{
+		%>
+			<script type="text/javascript"> 
+				alert("No users logged in");
+				window.location = "login.jsp";
+			</script>
+		<%
+			}
 		%>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<h3>Home Page </h3>
@@ -18,9 +26,14 @@
 	</head>
 	<body>
 		<ul>
-			<li><a href="signup.jsp">Sign Up</a></li>
-			<li><a href="login.jsp">Login</a></li>
-			<%
+			<li><a href="signup.jsp" name="sign">Sign Up</a></li>
+			<li><a href="login.jsp" name="log">Login</a></li>
+			<li><a href="category.jsp" name="cat">Category</a></li>
+			<li><a href="products.jsp" name="prod">Products</a></li>
+			<li><a href="product_browsing.jsp" name="browse">Product Browsing</a></li>
+			<li><a href="product_order.jsp" name="ord">Product Orders</a></li>		
+			
+			<% /*
 				Object category = session.getAttribute("category");
 				Object products = session.getAttribute("products");
 				Object browsing = session.getAttribute("browsing");
@@ -31,7 +44,7 @@
 					out.println(products);
 					out.println(browsing);
 					out.println(order);
-				}
+				}*/
 			%>
 		</ul>
 	</body>
