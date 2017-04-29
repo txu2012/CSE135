@@ -16,7 +16,7 @@
 	</tr>
 	
 	<tr>	
-		<form action=s"category.jsp" method=s"POST">
+		<form action="category.jsp" method="POST">
 		
 		<td><input value="" name="name"></td>
 		<td><textarea name="description"></textarea></td>

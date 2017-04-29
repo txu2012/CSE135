@@ -8,5 +8,26 @@
 </head>
 <body>
 
+<table border="1">
+	<tr>
+		<th>Product Name</th>
+		<th>SKU</th>
+		<th>category</th>
+		<th>price</th>
+
+	</tr>
+	
+	<tr>
+		<form action="products.jsp" method= "POST">
+		
+		<td><input value="" name = "name"></td>
+		<td><input value="" name = "SKU"></td>
+		<td><select name = "category">
+			<option value = ""></option>
+		</select></td>
+		<td><input value="" name = "price"></td>
+	</tr>
+</table>
+
 </body>
 </html>
