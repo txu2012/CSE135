@@ -4,22 +4,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Category</title>
+<h3>Category Page</h3>
 </head>
 <body>
 
-<table border = "1">
-	<tr border ="1">
+<table border="1">
+	<tr>
 		<th>Category Name</th>
 		<th>Description</th>
 	</tr>
 	
-	<tr border = "1">	
-		<form action= "category.jsp" method= "POST">
+	<tr>	
+		<form action=s"category.jsp" method=s"POST">
 		
-		<td><input value="" name = "name"</td>
-		<td><textarea name = "description"></textarea></td>
-		<td><input type = "submit" value = "Insert"></td>
+		<td><input value="" name="name"></td>
+		<td><textarea name="description"></textarea></td>
+		<td><input type="submit" value="Insert"></td>
 		</form>
 	</tr>
 </table>
