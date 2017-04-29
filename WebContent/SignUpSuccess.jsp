@@ -8,6 +8,6 @@
 	<h3>You have successfully signed up!</h3>
 </head>
 <body>
-
+	<a href="login.jsp">Login Page</a>
 </body>
 </html>

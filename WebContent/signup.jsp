@@ -11,7 +11,7 @@
 	
 		<form name = "signupform" action = "signup.jsp" method = "POST">
 			<p>
-				Name:<input type="text" name ="name">
+				Name:<input type="text" name ="name"> 
             </p>
              
             <p> 
@@ -90,28 +90,32 @@
 		<%
 			String pname = null;
 			String role = null;
+			String ageCheck = null;
 			int age = 0;
 			String states = null;
 			
 			try{
-				//Connection connection;
-				//Class.forName("org.postgresql.Driver");
-				
 				try{
-					pname = request.getParameter("name");
-					role = request.getParameter("role");
-					age = Integer.parseInt(request.getParameter("age"));
-					states = request.getParameter("states");
+					if(request.getParameter("name") != "" || request.getParameter("age") != ""){
+						pname = request.getParameter("name");
+						ageCheck = request.getParameter("age");
+						role = request.getParameter("role"); 
+						states = request.getParameter("states");
+					}
+					else{
+						response.sendRedirect("SignUpFailure.jsp");
+					}
 				}
 				catch(Exception e){
 					pname = null;
 					role = null;
 					age = 0;
+					ageCheck = null;
 					states = null;
 				}
 				
-				if(pname != null && role != null && age != 0 && states != null){
-					//connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CSE_135?" + "user=postgres&password=admin");
+				if(pname != null && role != null && ageCheck != null && states != null){
+					age = Integer.parseInt(ageCheck);
 					Connection connection = SQL_Tables.connect();
 					
 					Statement stmt = connection.createStatement();

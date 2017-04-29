@@ -5,6 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <h3>You have failed to sign up!</h3>
+<a href="index.jsp">Home</a>
+<a href="signup.jsp">Sign Up</a>
 </head>
 <body>
 
