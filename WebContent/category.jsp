@@ -8,5 +8,21 @@
 </head>
 <body>
 
+<table border = "1">
+	<tr border ="1">
+		<th>Category Name</th>
+		<th>Description</th>
+	</tr>
+	
+	<tr border = "1">	
+		<form action= "category.jsp" method= "POST">
+		
+		<td><input value="" name = "name"</td>
+		<td><textarea name = "description"></textarea></td>
+		<td><input type = "submit" value = "Insert"></td>
+		</form>
+	</tr>
+</table>
+
 </body>
 </html>
