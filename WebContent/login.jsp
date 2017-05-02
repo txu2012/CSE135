@@ -64,6 +64,6 @@
 
 
 	 	%>
-
+	<a href="signup.jsp">Sign Up</a>
 </body>
 </html>

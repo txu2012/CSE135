@@ -1,5 +1,5 @@
 CREATE TABLE users(
-    userID INTEGER PRIMARY KEY,
+    userID BIGSERIAL NOT NULL PRIMARY KEY,
     personName TEXT UNIQUE,
     roles TEXT,
     age INTEGER,
@@ -7,14 +7,14 @@ CREATE TABLE users(
     );
     
 CREATE TABLE categories(
-    catID INTEGER PRIMARY KEY,
+    catID BIGSERIAL NOT NULL PRIMARY KEY,
     catName TEXT UNIQUE,
     descrip TEXT,
     prodNum INTEGER
     );
 
 CREATE TABLE products(
-    prodID INTEGER PRIMARY KEY,
+    prodID BIGSERIAL NOT NULL PRIMARY KEY,
     prodName TEXT,
     SKU_Num TEXT UNIQUE,
     catgeory_name TEXT REFERENCES categories(catName) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE products(
     );
     
 CREATE TABLE shoppingCart(
-    shoppingID INTEGER PRIMARY KEY,
+    shoppingID BIGSERIAL NOT NULL PRIMARY KEY,
     shoppingUsers TEXT REFERENCES users(personName) NOT NULL,
     totalPrice INTEGER,
     ammount INTEGER,

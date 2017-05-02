@@ -53,11 +53,10 @@
 						else{
 							results = stmt.executeQuery("SELECT * FROM categories;");
 							//int i = results.last().getRow();
-							PreparedStatement pstmt = connection.prepareStatement("INSERT INTO categories (catID, catName, descrip, prodNum) values(?,?,?,?);");
-							pstmt.setInt(1,1);
-							pstmt.setString(2, name);
-							pstmt.setString(3, desc);
-							pstmt.setInt(4, 0);
+							PreparedStatement pstmt = connection.prepareStatement("INSERT INTO categories (catName, descrip, prodNum) values(?,?,?);");
+							pstmt.setString(1, name);
+							pstmt.setString(2, desc);
+							pstmt.setInt(3, 0);
 							pstmt.executeUpdate();
 							connection.commit();
 							
