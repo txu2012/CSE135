@@ -85,12 +85,23 @@
 						String desc = request.getParameter("categoryDesc");
 						
 						
-						PreparedStatement pstmt = connection.prepareStatement("DELETE FROM categories WHERE categories.catName = '" + name + "';");
-						pstmt.executeUpdate();
-						connection.commit();
-						
-						connection.setAutoCommit(true);
-						pstmt.close();
+						try{
+							PreparedStatement pstmt = connection.prepareStatement("DELETE FROM categories WHERE categories.catName = '" + name + "';");
+							pstmt.executeUpdate();
+							connection.commit();
+							
+							connection.setAutoCommit(true);
+							pstmt.close();
+						}
+						catch(SQLException e){
+							%>
+								<script type="text/javascript"> 
+									alert("Category still has 1 or more products connected to it.");
+									window.location = "category.jsp";
+								</script>
+							
+							<%
+						}
 	
 					}
 					else if(getButtonAction != null && getButtonAction.equals("Update")){
@@ -111,18 +122,23 @@
 							out.println(msg);
 						}
 						else{
-							Statement stmts = connection.createStatement();
-							ResultSet checkCat = stmts.executeQuery("SELECT * FROM categories WHERE catName = '" + name + "';");
+							//Statement stmts = connection.createStatement();
+							//ResultSet checkCat = stmts.executeQuery("SELECT * FROM categories WHERE catName = '" + name + "' AND descrip = '" + desc + "';");
 							PreparedStatement pstmt = null;
 							
-							if(!checkCat.next()){
-								pstmt = connection.prepareStatement("UPDATE categories SET descrip = ?, catName = ?;");
+							/*if(!checkCat.next()){
+								pstmt = connection.prepareStatement("UPDATE categories SET descrip = ?, catName = ? WHERE categories.catName = '" + name + "' AND categories.descrip = '" + desc + "';");
+								pstmt.setString(1, desc);
 								pstmt.setString(2, name);
 							}
 							else{
-								pstmt = connection.prepareStatement("UPDATE categories SET descrip = ? WHERE categories.catName = '" + name + "';");
-							}
+								pstmt = connection.prepareStatement("UPDATE categories SET descrip = ?, catName = ? WHERE categories.catName = '" + name + "' OR categories.descrip = '" + desc + "';");
+								pstmt.setString(1, desc);
+							}*/
+							
+							pstmt = connection.prepareStatement("UPDATE categories SET descrip = ?, catName = ? WHERE categories.catName = '" + name + "' OR categories.descrip = '" + desc + "';");
 							pstmt.setString(1, desc);
+							pstmt.setString(2, name);
 							pstmt.executeUpdate();
 							connection.commit();
 							

@@ -72,11 +72,11 @@
 							//int i = results.last().getRow();
 							try{
 								Float priceNum = Float.parseFloat(price);
-								PreparedStatement pstmt = connection.prepareStatement("INSERT INTO products (prodName, SKU_Num, category_name, price) values(?,?,?,?);");
+								PreparedStatement pstmt = connection.prepareStatement("INSERT INTO products (prodName, SKU_Num, price, category_name) values(?,?,?,(SELECT catName FROM categories where catName = '" + category + "'));");
 								pstmt.setString(1, name);
 								pstmt.setString(2, SKU);
-								pstmt.setString(3, category);
-								pstmt.setFloat(4, priceNum);
+								//pstmt.setString(3, category);
+								pstmt.setFloat(3, priceNum);
 								pstmt.executeUpdate();
 								connection.commit();
 								
@@ -103,9 +103,9 @@
 				else if(getButtonAction != null && getButtonAction.equals("Delete")){
 					connection.setAutoCommit(false);
 					
-					String SKU = request.getParameter("SKU");		
+					String SKU = request.getParameter("productSKU");		
 					
-					PreparedStatement pstmt = connection.prepareStatement("DELETE FROM products WHERE products.SKU_Num = '" + SKU + "';");
+					PreparedStatement pstmt = connection.prepareStatement("DELETE FROM products WHERE SKU_Num = '" + SKU + "';");
 					pstmt.executeUpdate();
 					connection.commit();
 					
@@ -146,16 +146,11 @@
 							ResultSet checkProd = stmts.executeQuery("SELECT * FROM products WHERE SKU_Num = '" + SKU + "';");
 							PreparedStatement pstmt = null;
 							
-							if(!checkProd.next()){
-								pstmt = connection.prepareStatement("UPDATE products SET prodName = ?, category_name = ?, price = ?, SKU_Num = ?;");
-								pstmt.setString(4, SKU);
-							}
-							else{
-								pstmt = connection.prepareStatement("UPDATE products SET prodName = ?, category_name = ?, price = ? WHERE products.SKU_Num = '" + SKU + "';");
-							}
-							pstmt.setString(1,name);
+							pstmt = connection.prepareStatement("UPDATE products SET prodName = ?, category_name = ?, price = ?, SKU_num = ? WHERE SKU_Num = '" + SKU + "' OR prodName = '" + name + "' OR price = '" + price + "';");
+							pstmt.setString(1, name);
 							pstmt.setString(2, category);
 							pstmt.setFloat(3, newPrice);
+							pstmt.setString(4, SKU);
 							pstmt.executeUpdate();
 							connection.commit();
 							
@@ -179,8 +174,9 @@
 			<tr>
 				<th>Product Name</th>
 				<th>SKU</th>
-				<th>category</th>
-				<th>price</th>
+				<th>Category</th>
+				<th>Current Category</th>
+				<th>Price</th>
 		
 			</tr>
 			
@@ -198,6 +194,7 @@
 							<option value="<%= catResults.getString("catName")%>"> <%= catResults.getString("catName")%></option>
 						<% } %>
 					</select></td>
+					<td>Current Category</td>
 					<td><input type="text" value="" name ="price"></td>
 					<td><input type="submit" name="getAction" value="Insert"></td>
 				</form>
@@ -218,6 +215,7 @@
 						<% } %>
 						</select>
 					</td>
+					<td><%= getAllResults.getString("category_name")%></td>
 					<td><input type="text" value="<%= getAllResults.getString("price")%>" name="productPrice"></td>
 					<td><input type="submit" name="getAction" value="Update"></td>
 					<td><input type="submit" name="getAction" value="Delete"></td>
