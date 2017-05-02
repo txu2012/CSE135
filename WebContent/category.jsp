@@ -34,7 +34,6 @@
 	
 			<% 	
 				try{
-					//Connection connection = SQL_Tables.connect();
 				
 					String getButtonAction = request.getParameter("getAction");
 					
@@ -56,8 +55,6 @@
 								out.println(msg);
 							}
 							else{
-								//results = stmt.executeQuery("SELECT * FROM categories;");
-								//int i = results.last().getRow();
 								PreparedStatement pstmt = connection.prepareStatement("INSERT INTO categories (catName, descrip, prodNum) values(?,?,?);");
 								pstmt.setString(1, name);
 								pstmt.setString(2, desc);
@@ -122,19 +119,7 @@
 							out.println(msg);
 						}
 						else{
-							//Statement stmts = connection.createStatement();
-							//ResultSet checkCat = stmts.executeQuery("SELECT * FROM categories WHERE catName = '" + name + "' AND descrip = '" + desc + "';");
 							PreparedStatement pstmt = null;
-							
-							/*if(!checkCat.next()){
-								pstmt = connection.prepareStatement("UPDATE categories SET descrip = ?, catName = ? WHERE categories.catName = '" + name + "' AND categories.descrip = '" + desc + "';");
-								pstmt.setString(1, desc);
-								pstmt.setString(2, name);
-							}
-							else{
-								pstmt = connection.prepareStatement("UPDATE categories SET descrip = ?, catName = ? WHERE categories.catName = '" + name + "' OR categories.descrip = '" + desc + "';");
-								pstmt.setString(1, desc);
-							}*/
 							
 							pstmt = connection.prepareStatement("UPDATE categories SET descrip = ?, catName = ? WHERE categories.catName = '" + name + "' OR categories.descrip = '" + desc + "';");
 							pstmt.setString(1, desc);

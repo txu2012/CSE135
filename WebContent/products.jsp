@@ -13,6 +13,7 @@
 		
 			Object newMsg = session.getAttribute("msg");
 			if(newMsg != null){
+				String position = "<section style='text-align:center'>" + (String)newMsg + "</section>";
 				PrintWriter writer = response.getWriter();
 				out.println(session.getAttribute("msg"));
 			}
@@ -68,8 +69,6 @@
 							out.println(msg);
 						}
 						else{
-							//results = stmt.executeQuery("SELECT * FROM categories;");
-							//int i = results.last().getRow();
 							try{
 								Float priceNum = Float.parseFloat(price);
 								PreparedStatement pstmt = connection.prepareStatement("INSERT INTO products (prodName, SKU_Num, price, category_name) values(?,?,?,(SELECT catName FROM categories where catName = '" + category + "'));");
@@ -169,7 +168,20 @@
 				Statement stmts = connection.createStatement();
 				ResultSet getAllResults = stmts.executeQuery("SELECT * FROM products;");
 		%>
-
+		<section style="text-align:left">
+			<ul>
+			<%
+				Statement stmtLinks = connection.createStatement();
+				ResultSet categoryResults = stmtLinks.executeQuery("SELECT catName FROM categories");
+				while(categoryResults.next()){
+			%>
+					<li><span><a href="category_products.jsp?linkName=<%=categoryResults.getString("catName")%>"><%= categoryResults.getString("catName")%></a></span></li>
+			<% } 
+				session.setAttribute("cate", request.getParameter("linkName"));
+			%>
+			</ul>
+		</section>
+		<section style="text-align:center">
 		<table border="1">
 			<tr>
 				<th>Product Name</th>
@@ -225,6 +237,14 @@
 			<% } %>
 			</tr>
 		</table>
+		</section>
 	 	<% } %>
+	 	
+	 	<ul>
+			<li><a href="index.jsp">Home</a></li>
+			<li><a href="category.jsp">Category</a></li>
+			<li><a href="product_browsing.jsp">Product Browsing</a></li>
+			<li><a href="product_order.jsp">Product Orders</a></li>		
+		</ul>
 	</body>
 </html>
