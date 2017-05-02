@@ -166,16 +166,29 @@
 				}
 				
 				Statement stmts = connection.createStatement();
-				ResultSet getAllResults = stmts.executeQuery("SELECT * FROM products;");
+				ResultSet getAllResults = null;
+				
+				if(request.getParameter("linkName") != null){
+					if(!request.getParameter("linkName").equals("All")){
+						getAllResults = stmts.executeQuery("SELECT * FROM products WHERE category_name = '" + request.getParameter("linkName") + "';");
+					}
+					else{
+						getAllResults = stmts.executeQuery("SELECT * FROM products;");
+					}
+				}
+				else{
+					getAllResults = stmts.executeQuery("SELECT * FROM products;");
+				}
 		%>
 		<section style="text-align:left">
 			<ul>
+				<li><span><a href="products.jsp?linkName=All">All</a></span></li>
 			<%
 				Statement stmtLinks = connection.createStatement();
 				ResultSet categoryResults = stmtLinks.executeQuery("SELECT catName FROM categories");
 				while(categoryResults.next()){
 			%>
-					<li><span><a href="category_products.jsp?linkName=<%=categoryResults.getString("catName")%>"><%= categoryResults.getString("catName")%></a></span></li>
+					<li><span><a href="products.jsp?linkName=<%=categoryResults.getString("catName")%>"><%= categoryResults.getString("catName")%></a></span></li>
 			<% } 
 				session.setAttribute("cate", request.getParameter("linkName"));
 			%>
@@ -211,7 +224,9 @@
 					<td><input type="submit" name="getAction" value="Insert"></td>
 				</form>
 			
-			<% while(getAllResults.next()) { %>
+			<%
+				while(getAllResults.next()) { 
+			%>
 			</tr>
 				<form action="products.jsp" method="POST">
 					<td><input type="text" value="<%= getAllResults.getString("prodName")%>" name="productName"></td>
