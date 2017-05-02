@@ -17,9 +17,9 @@ CREATE TABLE products(
     prodID BIGSERIAL NOT NULL PRIMARY KEY,
     prodName TEXT,
     SKU_Num TEXT UNIQUE,
-    catgeory_name TEXT REFERENCES categories(catName) NOT NULL,
-    price INTEGER,
-    ownID TEXT REFERENCES users(personName) NOT NULL
+    category_name TEXT REFERENCES categories(catName),
+    price REAL,
+    ownID TEXT REFERENCES users(personName)
     );
     
 CREATE TABLE shoppingCart(

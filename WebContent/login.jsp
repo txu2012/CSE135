@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Login in Page</title>
+<title>Login</title>
+<h3>Login Page</h3>
 </head>
 <body>
 		<form name = "loginform" action ="login.jsp" method = "POST">
@@ -30,7 +31,7 @@
 				if(username != null){
 					Connection connection = SQL_Tables.connect();
 					Statement stmt = connection.createStatement();
-					ResultSet results = stmt.executeQuery("SELECT personName FROM users WHERE users.personName = '" + username + "';");
+					ResultSet results = stmt.executeQuery("SELECT * FROM users WHERE users.personName = '" + username + "';");
 					if(!results.next())
 					{
 						msg = "The provided name " + username  + " is not known" ;	
@@ -40,18 +41,12 @@
 						return;
 					}
 					else{
+						
+						String roleType = results.getString("roles");
 						msg = "Hello " + username;
-						String category = "<li><a href='category.jsp'>Category</a></li>";
-						String products = "<li><a href='products.jsp'>Products</a></li>";
-						String browsing = "<li><a href='product_browsing.jsp'>Product Browsing</a></li>";
-						String order = "<li><a href='product_order.jsp'>Product Orders</a></li>";
 						
 						session.setAttribute("msg", msg);
-						session.setAttribute("category", category);
-						session.setAttribute("products", products);
-						session.setAttribute("browsing", browsing);
-						session.setAttribute("order", order);
-						
+						session.setAttribute("roleType", roleType);
 						response.sendRedirect("index.jsp");
 						
 						return;
