@@ -11,6 +11,7 @@
 <body>
 	<%
 		Connection connection = SQL_Tables.connect();
+		ResultSet results = null;
 		Object newMsg = session.getAttribute("msg");
 		if(newMsg != null){
 			PrintWriter writer = response.getWriter();
@@ -25,27 +26,41 @@
 	<% 
 		}
 		Statement stmt = connection.createStatement();
-		ResultSet getAllResults = stmt.executeQuery("SELECT * FROM categories;");
+		ResultSet getAllResults = stmt.executeQuery("SELECT catName FROM categories;");
 	
 	%>
 	
 	
 	<ul>
-	
-	
+		<li><span><a href="products_browsing.jsp?linkname=All">All</a></span></li>
+		
 		<% 
       	while(getAllResults.next()){
       	%>
-      		<li><a href="category_products.jsp">"<%= getAllResults.getString("catName")%>"</a></li>
+		<li><span><a href="products_browsing.jsp?linkname=<%=getAllResults.getString("catName")%>"><%= getAllResults.getString("catName")%></a></span></li>
       		
       	<%
-      		session.setAttribute("category", getAllResults.getString("catName"));
-		}
+      	}
+		session.setAttribute("prodb", request.getParameter("linkname"));
+		
 		%>
-		
-		
+		<% 
+				Statement stmts = connection.createStatement();
+			    
+				
+				if(request.getParameter("linkname") != null){
+					if(!request.getParameter("linkname").equals("All")){
+						results = stmts.executeQuery("SELECT * FROM products WHERE category_name = '" + request.getParameter("linkname") + "';");
+					}
+					else{
+						results = stmts.executeQuery("SELECT * FROM products;");
+					}
+				}
+				else{
+					results = stmts.executeQuery("SELECT * FROM products;");
+				}
 	
-	
+	%>
 	
 	</ul>
 		
@@ -65,7 +80,8 @@
 		}
 		if(search_name != null){
 			Statement stmtt = connection.createStatement();
-			ResultSet result = stmt.executeQuery("SELECT * FROM products WHERE prodName = '" + search_name +"';");
+			results = stmt.executeQuery("SELECT * FROM products WHERE prodName = '" + search_name +"';");
+		}
 		%>
 		<table border="1">
 		<tr>
@@ -76,18 +92,18 @@
 			
 		</tr>
 		<% 
-			while(result.next()){
+			while(results.next()){
 				%>
 					<tr>
-					<td>"<%=result.getString("prodName")%>"</td>
-					<td>"<%=result.getString("SKU_Num")%>"</td>
-					<td>"<%=result.getString("category_name")%>"</td>
-					<td>"<%=result.getString("price")%>"</td>
+					<td>"<%=results.getString("prodName")%>"</td>
+					<td>"<%=results.getString("SKU_Num")%>"</td>
+					<td>"<%=results.getString("category_name")%>"</td>
+					<td>"<%=results.getString("price")%>"</td>
 					</tr>
 				<%			
 			}
 		
-		}
+		
 	%>
 	</table>
 	</form>		
