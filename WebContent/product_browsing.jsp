@@ -97,15 +97,17 @@
 			while(results.next()){
 				%>
 					<tr>
-					<td>"<%=results.getString("prodName")%>"</td>
-					<td>"<%=results.getString("SKU_Num")%>"</td>
-					<td>"<%=results.getString("category_name")%>"</td>
-					<td>"<%=results.getString("price")%>"</td>
+					
+					<td><a href="product_browsing.jsp?productname=<%=results.getString("prodName")%>"><%=results.getString("prodName")%></a></td>
+					<td><%=results.getString("SKU_Num")%></td>
+					<td><%=results.getString("category_name")%></td>
+					<td><%=results.getString("price")%></td>
 					</tr>
 				<%			
 			}
 		
-		
+		    session.setAttribute("productorder", request.getParameter("productname"));
+
 	%>
 	</table>
 	</form>		
@@ -113,4 +115,8 @@
 	
 			
 </body>
+		<ul>
+			<li><a href="index.jsp">Home</a></li>
+			
+		</ul>
 </html>
