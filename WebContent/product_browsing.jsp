@@ -27,40 +27,42 @@
 		}
 		Statement stmt = connection.createStatement();
 		ResultSet getAllResults = stmt.executeQuery("SELECT catName FROM categories;");
+		
+		
+		Statement stmts = connection.createStatement();
+	    
+		
+		if(request.getParameter("linkname") != null){
+			if(!request.getParameter("linkname").equals("All")){
+				results = stmts.executeQuery("SELECT * FROM products WHERE category_name = '" + request.getParameter("linkname") + "';");
+			}
+			else{
+				results = stmts.executeQuery("SELECT * FROM products;");
+			}
+		}
+		else{
+			results = stmts.executeQuery("SELECT * FROM products;");
+		}
+
+%>
 	
-	%>
+	
 	
 	
 	<ul>
-		<li><span><a href="products_browsing.jsp?linkname=All">All</a></span></li>
+		<li><span><a href="product_browsing.jsp?linkname=All">All</a></span></li>
 		
 		<% 
       	while(getAllResults.next()){
       	%>
-		<li><span><a href="products_browsing.jsp?linkname=<%=getAllResults.getString("catName")%>"><%= getAllResults.getString("catName")%></a></span></li>
+		<li><span><a href="product_browsing.jsp?linkname=<%=getAllResults.getString("catName")%>"><%= getAllResults.getString("catName")%></a></span></li>
       		
       	<%
       	}
 		session.setAttribute("prodb", request.getParameter("linkname"));
 		
 		%>
-		<% 
-				Statement stmts = connection.createStatement();
-			    
-				
-				if(request.getParameter("linkname") != null){
-					if(!request.getParameter("linkname").equals("All")){
-						results = stmts.executeQuery("SELECT * FROM products WHERE category_name = '" + request.getParameter("linkname") + "';");
-					}
-					else{
-						results = stmts.executeQuery("SELECT * FROM products;");
-					}
-				}
-				else{
-					results = stmts.executeQuery("SELECT * FROM products;");
-				}
-	
-	%>
+
 	
 	</ul>
 		
