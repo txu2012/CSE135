@@ -34,7 +34,7 @@ CREATE TABLE purchased(
     purchasedID BIGSERIAL NOT NULL PRIMARY KEY,
     purchasedUser TEXT REFERENCES users(personName) NOT NULL,
     purchasedDate TEXT,
-    purchasedItem TEXT REFERENCES products(SKU_Num)
+    purchasedItem TEXT REFERENCES products(SKU_Num),
     purchasedAmount INTEGER,
 	purchasedName TEXT,
 	purchasedPrice REAL

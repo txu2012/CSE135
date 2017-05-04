@@ -77,7 +77,7 @@
 						<th>Product Amount</th>
 					</tr>
 					<% 
-						PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM products WHERE products.prodName = '" + getProduct + "';");
+						PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM products WHERE products.SKU_Num = '" + getProduct + "';");
 						ResultSet getAllResults = pstmt.executeQuery();
 						while(getAllResults.next()) {
 					%>

@@ -102,7 +102,7 @@
 			while(results.next()){
 				%>
 					<tr>
-						<td><a href="product_order.jsp?productname=<%=results.getString("prodName")%>"><%=results.getString("prodName")%></a></td>
+						<td><a href="product_order.jsp?productname=<%=results.getString("SKU_Num")%>"><%=results.getString("prodName")%></a></td>
 						<td><%=results.getString("SKU_Num")%></td>
 						<td><%=results.getString("category_name")%></td>
 						<td><%=results.getString("price")%></td>
