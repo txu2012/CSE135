@@ -6,6 +6,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Products</title>
+		<h3>Products Page</h3>
 	</head>
 	<body>
 		<%
@@ -269,13 +270,23 @@
 				</tr>
 			</table>
 		</section>
-	 	<% } %>
-	 	
-	 	<ul>
+		<ul>
 			<li><a href="index.jsp">Home</a></li>
 			<li><a href="category.jsp">Category</a></li>
 			<li><a href="product_browsing.jsp">Product Browsing</a></li>
 			<li><a href="product_order.jsp">Product Orders</a></li>		
 		</ul>
+	 	<% } 
+			else{
+				%>
+		<p>This page is for owners only!</p>
+		<ul>
+			<li><a href="index.jsp">Home</a></li>
+			<li><a href="product_browsing.jsp">Product Browsing</a></li>
+		</ul>
+		<% 
+			}
+	 	%>
+	 	
 	</body>
 </html>

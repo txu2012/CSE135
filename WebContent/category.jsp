@@ -28,8 +28,6 @@
 			
 			Object userRole = session.getAttribute("roleType");
 			if(userRole != null && userRole.equals("Owner")){
-				
-			
 		%>
 	
 			<% 	
@@ -129,8 +127,6 @@
 							
 							connection.setAutoCommit(true);
 							pstmt.close();
-							//stmt.close();
-							//results.close();
 						}
 					}
 			
@@ -173,6 +169,12 @@
 				}
 			%>
 		</table>
+		<ul>
+			<li><a href="index.jsp">Home</a></li>
+			<li><a href="products.jsp">Products</a></li>
+			<li><a href="product_browsing.jsp">Product Browsing</a></li>
+			<li><a href="product_order.jsp">Product Orders</a></li>		
+		</ul>
 	<%
 				connection.close();
 				getAllResults.close();
@@ -184,13 +186,11 @@
 		else{
 	%>
 	<p>This page is for owners only!</p>
-	<% } %>
-	
-		<ul>
+	<ul>
 			<li><a href="index.jsp">Home</a></li>
-			<li><a href="products.jsp">Products</a></li>
 			<li><a href="product_browsing.jsp">Product Browsing</a></li>
-			<li><a href="product_order.jsp">Product Orders</a></li>		
 		</ul>
+	<% } %>
+
 	</body>
 </html>
