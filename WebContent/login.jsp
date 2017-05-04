@@ -43,7 +43,7 @@
 					else{
 						
 						String roleType = results.getString("roles");
-						msg = "Hello " + username;
+						msg = "<p>Hello " + username + ".</p>";
 						
 						session.setAttribute("msg", msg);
 						session.setAttribute("user", username);

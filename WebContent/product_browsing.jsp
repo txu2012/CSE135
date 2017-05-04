@@ -7,13 +7,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Product Browsing Page</title>
-</head>
-<body>
+<h3>Product Browsing</h3>
 	<%
 		Connection connection = SQL_Tables.connect();
 		ResultSet results = null;
 		Object newMsg = session.getAttribute("msg");
 		if(newMsg != null){
+	%>
+			<a style="float: right" href="buy_shopping_cart.jsp">Buy Shopping Cart</a>		
+	<%
 			PrintWriter writer = response.getWriter();
 			out.println(session.getAttribute("msg"));
 		}
@@ -23,6 +25,9 @@
 				alert("No users logged in");
 				window.location = "login.jsp";
 		</script>
+</head>
+<body>
+	
 	<% 
 		}
 		Statement stmt = connection.createStatement();
@@ -111,11 +116,21 @@
 	</table>
 	</form>		
 	
+		<%
+			Object userRole = session.getAttribute("roleType");
+			if(userRole != null && userRole.equals("Owner")){
+		%>		
+				<ul>
+					<li><a href="index.jsp">Home</a></li>
+					<li><a href="category.jsp">Category</a></li>
+					<li><a href="product_browsing.jsp">Product Browsing</a></li>
+					<li><a href="product_order.jsp">Product Orders</a></li>		
+				</ul>
+		<%	
+			}
+		%>
 	
 			
 </body>
-		<ul>
-			<li><a href="index.jsp">Home</a></li>
-			
-		</ul>
+		
 </html>

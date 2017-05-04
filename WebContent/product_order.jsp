@@ -7,14 +7,15 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Product order page</title>
 		<h3>Product Order</h3>
-	</head>
-	<body>
 		<%
 			Connection connection = SQL_Tables.connect();
 			String newMsg = (String)session.getAttribute("msg");
 			String username = (String)session.getAttribute("user");
 
 			if(newMsg != null){
+		%>
+				<a style="float: right" href="buy_shopping_cart.jsp">Buy Shopping Cart</a>		
+		<%
 				PrintWriter writer = response.getWriter();
 				out.println(session.getAttribute("msg"));
 			}
@@ -24,8 +25,10 @@
 					alert("No users logged in");
 					window.location = "login.jsp";
 			</script>
-		<% 
-			}
+		
+	</head>
+	<body>
+		<%	}
 			
 				String getProduct = request.getParameter("productname");
 				
@@ -56,7 +59,7 @@
 							connection.commit();
 							connection.setAutoCommit(true);
 							shoppingCartInsert.close();
-							out.println("Ordered successfully.");
+							out.println("<p>Ordered successfully.</p>");
 						}
 						catch(NumberFormatException e){
 							out.println("<p>Please input a valid number for order.</p>");
@@ -125,5 +128,9 @@
 				}
 			%>
 		</table>
+		
+		<ul>
+			<li><a href="index.jsp">Home</a></li>	
+		</ul>
 	</body>
 </html>

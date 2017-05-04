@@ -7,13 +7,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Category</title>
 		<h3>Category Page</h3>
-	</head>
-	<body>
 		<%
 			Connection connection = SQL_Tables.connect();
 		
 			Object newMsg = session.getAttribute("msg");
 			if(newMsg != null){
+		%>
+				<a style="float: right" href="buy_shopping_cart.jsp">Buy Shopping Cart</a>		
+		<%
 				PrintWriter writer = response.getWriter();
 				out.println(session.getAttribute("msg"));
 			}
@@ -23,6 +24,8 @@
 				alert("No users logged in");
 				window.location = "login.jsp";
 			</script>
+	</head>
+	<body>
 		<%
 			}
 			

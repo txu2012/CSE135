@@ -35,5 +35,7 @@ CREATE TABLE purchased(
     purchasedUser TEXT REFERENCES users(personName) NOT NULL,
     purchasedDate TEXT,
     purchasedItem TEXT REFERENCES products(SKU_Num)
-    purchasedAmount INTEGER
+    purchasedAmount INTEGER,
+	purchasedName TEXT,
+	purchasedPrice REAL
     );

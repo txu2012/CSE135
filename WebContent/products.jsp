@@ -7,23 +7,26 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Products</title>
 		<h3>Products Page</h3>
-	</head>
-	<body>
 		<%
 			Connection connection = SQL_Tables.connect();
-		
-			Object newMsg = session.getAttribute("msg");
+			String newMsg = (String)session.getAttribute("msg");
+			String username = (String)session.getAttribute("user");
+
 			if(newMsg != null){
-				String position = "<section style='display: inline-block; vertical-align: top'>" + newMsg.toString() + "</section>";
+		%>
+				<a style="float: right" href="buy_shopping_cart.jsp">Buy Shopping Cart</a>		
+		<%
 				PrintWriter writer = response.getWriter();
-				out.println(position);
+				out.println(session.getAttribute("msg"));
 			}
 			else{
 		%>
-			<script type="text/javascript"> 
-				alert("No users logged in");
-				window.location = "login.jsp";
+			<script type = "text/javascript">
+					alert("No users logged in");
+					window.location = "login.jsp";
 			</script>
+	</head>
+	<body>
 		<%
 			}
 			String msg = "";
