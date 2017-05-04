@@ -13,9 +13,9 @@
 		
 			Object newMsg = session.getAttribute("msg");
 			if(newMsg != null){
-				String position = "<section style='text-align:center'>" + (String)newMsg + "</section>";
+				String position = "<section style='display: inline-block; vertical-align: top'>" + newMsg.toString() + "</section>";
 				PrintWriter writer = response.getWriter();
-				out.println(session.getAttribute("msg"));
+				out.println(position);
 			}
 			else{
 		%>
@@ -25,6 +25,11 @@
 			</script>
 		<%
 			}
+			String msg = "";
+			String name = "";
+			String price = "";
+			String SKU = "";
+			String category = "";
 			
 			Object userRole = session.getAttribute("roleType");
 			if(userRole != null && userRole.equals("Owner")){
@@ -34,27 +39,25 @@
 				if(getButtonAction != null && getButtonAction.equals("Insert")){
 					connection.setAutoCommit(false);
 					
-					String name = request.getParameter("name");
-					String price = request.getParameter("price");
-					String SKU = request.getParameter("SKU");
-					String category = request.getParameter("category");
+					name = request.getParameter("name");
+					price = request.getParameter("price");
+					SKU = request.getParameter("SKU");
+					category = request.getParameter("category");
 					
-					if(name == ""){
-						String msg = "<p>Product name is missing.</p>";
-						response.setContentType("text/html");
-						PrintWriter writer = response.getWriter();
+					if(name == "" && SKU == "" && price == ""){
+						msg = "<p>Insert failed. Product name, SKU and price is missing.</p>";
+						out.println(msg);
+					}
+					else if(name == ""){
+						msg = "<p>Product name is missing.</p>";
 						out.println(msg);
 					}
 					else if(SKU == ""){
-						String msg = "<p>Product SKU is missing.</p>";
-						response.setContentType("text/html");
-						PrintWriter writer = response.getWriter();
+						msg = "<p>Insert failed. Product SKU is missing.</p>";
 						out.println(msg);
 					}
 					else if(price == ""){
-						String msg = "<p>Product price is missing.</p>";
-						response.setContentType("text/html");
-						PrintWriter writer = response.getWriter();
+						msg = "<p>Insert failed. Product price is missing.</p>";
 						out.println(msg);
 					}
 					else if(name != "" && price != "" && SKU != ""){
@@ -63,21 +66,22 @@
 						ResultSet results = stmt.executeQuery("SELECT sku_num FROM products WHERE products.SKU_Num = '" + SKU + "';");
 						
 						if(results.next()){
-							String msg = "<p>Product already exists</p>";
-							response.setContentType("text/html");
-							PrintWriter writer = response.getWriter();
+							msg = "<p>Insert failed. Product already exists</p>";
 							out.println(msg);
 						}
 						else{
 							try{
 								Float priceNum = Float.parseFloat(price);
-								PreparedStatement pstmt = connection.prepareStatement("INSERT INTO products (prodName, SKU_Num, price, category_name) values(?,?,?,(SELECT catName FROM categories where catName = '" + category + "'));");
+								PreparedStatement pstmt = connection.prepareStatement("INSERT INTO products (prodName, SKU_Num, price, category_name)"+
+																			" values(?,?,?,(SELECT catName FROM categories where catName = '" + category + "'));");
 								pstmt.setString(1, name);
 								pstmt.setString(2, SKU);
-								//pstmt.setString(3, category);
 								pstmt.setFloat(3, priceNum);
 								pstmt.executeUpdate();
 								connection.commit();
+								
+								msg = "<p>" + name + " has been successfully inserted. </p>";
+								out.println(msg);
 								
 								connection.setAutoCommit(true);
 								pstmt.close();
@@ -85,28 +89,24 @@
 								results.close();
 							}
 							catch(NumberFormatException e){
-								String msg = "<p>Product price is not a number.</p>";
-								response.setContentType("text/html");
-								PrintWriter writer = response.getWriter();
+								msg = "<p>Product price is not a number.</p>";
 								out.println(msg);	
 							}
 						}
-					}
-					else{
-						String msg = "<p>Category Name and Description required.</p>";
-						response.setContentType("text/html");
-						PrintWriter writer = response.getWriter();
-						out.println(msg);
 					}
 				}
 				else if(getButtonAction != null && getButtonAction.equals("Delete")){
 					connection.setAutoCommit(false);
 					
-					String SKU = request.getParameter("productSKU");		
+					SKU = request.getParameter("productSKU");	
+					name = request.getParameter("productName");
 					
 					PreparedStatement pstmt = connection.prepareStatement("DELETE FROM products WHERE SKU_Num = '" + SKU + "';");
 					pstmt.executeUpdate();
 					connection.commit();
+					
+					msg = "<p>" + name + " has been successfully deleted. </p>";
+					out.println(msg);
 					
 					connection.setAutoCommit(true);
 					pstmt.close();
@@ -115,27 +115,25 @@
 				else if(getButtonAction != null && getButtonAction.equals("Update")){
 					connection.setAutoCommit(false);
 					
-					String name = request.getParameter("productName");
-					String price = request.getParameter("productPrice");
-					String SKU = request.getParameter("productSKU");
-					String category = request.getParameter("newCategory");
+					name = request.getParameter("productName");
+					price = request.getParameter("productPrice");
+					SKU = request.getParameter("productSKU");
+					category = request.getParameter("newCategory");
 					
-					if(name == ""){
-						String msg = "<p>Product name is missing.</p>";
-						response.setContentType("text/html");
-						PrintWriter writer = response.getWriter();
+					if(name == "" && SKU == "" && price == ""){
+						msg = "<p>Update failed. Product name, SKU and price is missing.</p>";
+						out.println(msg);
+					}
+					else if(name == ""){
+						msg = "<p>Update failed. Product name is missing.</p>";
 						out.println(msg);
 					}
 					else if(SKU == ""){
-						String msg = "<p>Product SKU is missing.</p>";
-						response.setContentType("text/html");
-						PrintWriter writer = response.getWriter();
+						msg = "<p>Update failed. Product SKU is missing.</p>";
 						out.println(msg);
 					}
 					else if(price == ""){
-						String msg = "<p>Product price is missing.</p>";
-						response.setContentType("text/html");
-						PrintWriter writer = response.getWriter();
+						msg = "<p>Update failed. Product price is missing.</p>";
 						out.println(msg);
 					}
 					else if(name != "" && SKU != "" && price != ""){
@@ -145,7 +143,8 @@
 							ResultSet checkProd = stmts.executeQuery("SELECT * FROM products WHERE SKU_Num = '" + SKU + "';");
 							PreparedStatement pstmt = null;
 							
-							pstmt = connection.prepareStatement("UPDATE products SET prodName = ?, category_name = ?, price = ?, SKU_num = ? WHERE SKU_Num = '" + SKU + "' OR prodName = '" + name + "' OR price = '" + price + "';");
+							pstmt = connection.prepareStatement("UPDATE products SET prodName = ?, category_name = ?, price = ?, SKU_num = ? WHERE SKU_Num = '" 
+																		+ SKU + "' OR prodName = '" + name + "' OR price = '" + price + "';");
 							pstmt.setString(1, name);
 							pstmt.setString(2, category);
 							pstmt.setFloat(3, newPrice);
@@ -153,13 +152,14 @@
 							pstmt.executeUpdate();
 							connection.commit();
 							
+							msg = "<p>" + name + " has been successfully updated. </p>";
+							out.println(msg);
+							
 							connection.setAutoCommit(true);
 							pstmt.close();
 						}
 						catch(NumberFormatException e){
-							String msg = "<p>Product price is not a number.</p>";
-							response.setContentType("text/html");
-							PrintWriter writer = response.getWriter();
+							msg = "<p>Update failed. Product price is not a number.</p>";
 							out.println(msg);	
 						}
 					}
@@ -167,20 +167,36 @@
 				
 				Statement stmts = connection.createStatement();
 				ResultSet getAllResults = null;
+				String searchButton = request.getParameter("searchSubmit");
 				
 				if(request.getParameter("linkName") != null){
 					if(!request.getParameter("linkName").equals("All")){
-						getAllResults = stmts.executeQuery("SELECT * FROM products WHERE category_name = '" + request.getParameter("linkName") + "';");
+						if(request.getParameter("prodSearch") != null && searchButton != null){
+							getAllResults = stmts.executeQuery("SELECT * FROM products WHERE category_name = '" + request.getParameter("linkName") + "' AND prodName = '" + request.getParameter("prodSearch") + "';");
+						}
+						else{
+							getAllResults = stmts.executeQuery("SELECT * FROM products WHERE category_name = '" + request.getParameter("linkName") + "';");
+						}
 					}
 					else{
 						getAllResults = stmts.executeQuery("SELECT * FROM products;");
 					}
 				}
+				else if(request.getParameter("prodSearch") != null && searchButton != null){
+					getAllResults = stmts.executeQuery("SELECT * FROM products WHERE prodName = '" + request.getParameter("prodSearch") + "';");
+				}
 				else{
 					getAllResults = stmts.executeQuery("SELECT * FROM products;");
 				}
 		%>
-		<section style="text-align:left">
+		<div style="float:right">
+			<form action="products.jsp" method="POST">
+				<p>Product Search</p>
+				<input type="text" value="" name="prodSearch">
+				<input type="submit" value="Search" name="searchSubmit">
+			</form>
+		</div>
+		<section style="margin-top: 50px; display:inline-block">
 			<ul>
 				<li><span><a href="products.jsp?linkName=All">All</a></span></li>
 			<%
@@ -194,64 +210,64 @@
 			%>
 			</ul>
 		</section>
-		<section style="text-align:center">
-		<table border="1">
-			<tr>
-				<th>Product Name</th>
-				<th>SKU</th>
-				<th>Category</th>
-				<th>Current Category</th>
-				<th>Price</th>
-		
-			</tr>
+		<section style="margin-top: 50px; display:inline-block">
+			<table border="1">
+				<tr>
+					<th>Product Name</th>
+					<th>SKU</th>
+					<th>Category</th>
+					<th>Current Category</th>
+					<th>Price</th>
 			
-			<tr>
-				<form action="products.jsp" method= "POST">
-					<td><input type="text" value="" name="name"></td>
-					<td><input type="text" value="" name="SKU"></td>
-					<td><select name="category">
-						<%
-							Statement stmt = connection.createStatement();
-							ResultSet catResults = stmt.executeQuery("SELECT catName FROM categories;");
-							
-							while(catResults.next()){
-						%>
-							<option value="<%= catResults.getString("catName")%>"> <%= catResults.getString("catName")%></option>
-						<% } %>
-					</select></td>
-					<td>Current Category</td>
-					<td><input type="text" value="" name ="price"></td>
-					<td><input type="submit" name="getAction" value="Insert"></td>
-				</form>
-			
-			<%
-				while(getAllResults.next()) { 
-			%>
-			</tr>
-				<form action="products.jsp" method="POST">
-					<td><input type="text" value="<%= getAllResults.getString("prodName")%>" name="productName"></td>
-					<td><input type="text" value="<%= getAllResults.getString("SKU_Num")%>" name="productSKU"></td>
-					<td><select name="newCategory">
-						<%
-							//Statement stmtCat = connection.createStatement();
-							catResults = stmt.executeQuery("SELECT catName FROM categories;");
-							
-							while(catResults.next()){
-						%>
-							<option value="<%= catResults.getString("catName")%>"> <%= catResults.getString("catName")%></option>
-						<% } %>
-						</select>
-					</td>
-					<td><%= getAllResults.getString("category_name")%></td>
-					<td><input type="text" value="<%= getAllResults.getString("price")%>" name="productPrice"></td>
-					<td><input type="submit" name="getAction" value="Update"></td>
-					<td><input type="submit" name="getAction" value="Delete"></td>
-					
-				</form>
-			<tr>
-			<% } %>
-			</tr>
-		</table>
+				</tr>
+				
+				<tr>
+					<form action="products.jsp" method= "POST">
+						<td><input type="text" value="" name="name"></td>
+						<td><input type="text" value="" name="SKU"></td>
+						<td><select name="category">
+							<%
+								Statement stmt = connection.createStatement();
+								ResultSet catResults = stmt.executeQuery("SELECT catName FROM categories;");
+								
+								while(catResults.next()){
+							%>
+								<option value="<%= catResults.getString("catName")%>"> <%= catResults.getString("catName")%></option>
+							<% } %>
+						</select></td>
+						<td>Current Category</td>
+						<td><input type="text" value="" name ="price"></td>
+						<td><input type="submit" name="getAction" value="Insert"></td>
+					</form>
+				
+				<%
+					while(getAllResults.next()) { 
+				%>
+				</tr>
+					<form action="products.jsp" method="POST">
+						<td><input type="text" value="<%= getAllResults.getString("prodName")%>" name="productName"></td>
+						<td><input type="text" value="<%= getAllResults.getString("SKU_Num")%>" name="productSKU"></td>
+						<td><select name="newCategory">
+							<%
+								//Statement stmtCat = connection.createStatement();
+								catResults = stmt.executeQuery("SELECT catName FROM categories;");
+								
+								while(catResults.next()){
+							%>
+								<option value="<%= catResults.getString("catName")%>"> <%= catResults.getString("catName")%></option>
+							<% } %>
+							</select>
+						</td>
+						<td><%= getAllResults.getString("category_name")%></td>
+						<td><input type="text" value="<%= getAllResults.getString("price")%>" name="productPrice"></td>
+						<td><input type="submit" name="getAction" value="Update"></td>
+						<td><input type="submit" name="getAction" value="Delete"></td>
+						
+					</form>
+				<tr>
+				<% } %>
+				</tr>
+			</table>
 		</section>
 	 	<% } %>
 	 	
