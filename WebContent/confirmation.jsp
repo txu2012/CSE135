@@ -51,6 +51,25 @@
 				</tr>
 			<% } %>
 		</table>
-		<p><%= totalPrice %></p>
+		<p>Total Price: <%= totalPrice %></p>
+		
+		<%
+			Object userRole = session.getAttribute("roleType");
+			if(userRole != null && userRole.equals("Owner")){
+		%>		
+				<ul>
+					<li><a href="index.jsp">Home</a></li>
+					<li><a href="category.jsp">Category</a></li>
+					<li><a href="product_browsing.jsp">Product Browsing</a></li>
+					<li><a href="product_order.jsp">Product Orders</a></li>		
+				</ul>
+		<%	
+			}
+			else{
+		%>
+				<ul>
+					<li><a href="product_browsing.jsp">Product Browsing</a></li>	
+				</ul>
+		<% } %>
 	</body>
 </html>
