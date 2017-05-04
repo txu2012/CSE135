@@ -74,7 +74,7 @@
 							try{
 								Float priceNum = Float.parseFloat(price);
 								PreparedStatement pstmt = connection.prepareStatement("INSERT INTO products (prodName, SKU_Num, price, category_name)"+
-																			" values(?,?,?,(SELECT catName FROM categories where catName = '" + category + "'));");
+																			" values(?,?,?,(SELECT catName FROM categories WHERE catName = '" + category + "'));");
 								pstmt.setString(1, name);
 								pstmt.setString(2, SKU);
 								pstmt.setFloat(3, priceNum);
@@ -240,11 +240,11 @@
 						<td><input type="text" value="" name ="price"></td>
 						<td><input type="submit" name="getAction" value="Insert"></td>
 					</form>
-				
+				</tr>
 				<%
 					while(getAllResults.next()) { 
 				%>
-				</tr>
+				<tr>
 					<form action="products.jsp" method="POST">
 						<td><input type="text" value="<%= getAllResults.getString("prodName")%>" name="productName"></td>
 						<td><input type="text" value="<%= getAllResults.getString("SKU_Num")%>" name="productSKU"></td>
@@ -265,9 +265,9 @@
 						<td><input type="submit" name="getAction" value="Delete"></td>
 						
 					</form>
-				<tr>
-				<% } %>
 				</tr>
+				<% } %>
+			
 			</table>
 		</section>
 		<ul>

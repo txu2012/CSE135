@@ -34,11 +34,11 @@
 					ResultSet results = stmt.executeQuery("SELECT * FROM users WHERE users.personName = '" + username + "';");
 					if(!results.next())
 					{
-						msg = "The provided name " + username  + " is not known" ;	
+						msg = "<p>The provided name " + username  + " is not known</p>" ;	
 						response.setContentType("text/html");
 						PrintWriter writer = response.getWriter();
 						out.println(msg);
-						return;
+						
 					}
 					else{
 						
@@ -46,10 +46,11 @@
 						msg = "Hello " + username;
 						
 						session.setAttribute("msg", msg);
+						session.setAttribute("user", username);
 						session.setAttribute("roleType", roleType);
 						response.sendRedirect("index.jsp");
 						
-						return;
+						//return;
 					}
 				}
 			}

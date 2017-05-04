@@ -25,7 +25,15 @@ CREATE TABLE products(
 CREATE TABLE shoppingCart(
     shoppingID BIGSERIAL NOT NULL PRIMARY KEY,
     shoppingUsers TEXT REFERENCES users(personName) NOT NULL,
-    totalPrice INTEGER,
-    ammount INTEGER,
-    productItems TEXT REFERENCES products(SKU_Num) NOT NULL
+    totalPrice REAL,
+    amount INTEGER,
+    productItems TEXT REFERENCES products(SKU_Num)
+    );
+    
+CREATE TABLE purchased(
+    purchasedID BIGSERIAL NOT NULL PRIMARY KEY,
+    purchasedUser TEXT REFERENCES users(personName) NOT NULL,
+    purchasedDate TEXT,
+    purchasedItem TEXT REFERENCES products(SKU_Num)
+    purchasedAmount INTEGER
     );
