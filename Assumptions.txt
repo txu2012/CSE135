@@ -1,7 +1,18 @@
-Tony Xu A10447459
-Roland Personius A11643875
+Tony Xu A10447459 t2xu@ucsd.edu
+Roland Personius A11643875 rpersoni@ucsd.edu
 
 Assumptions
 -	After user puts item into shopping cart, price will not change. Users will buy at the price they added to shopping cart.
 -	Shopping cart is assumed to be persistent until bought, not session scoped
 -	Any owner may update/insert/delete products and categories
+
+Technologies Used
+-	Eclipse IDE
+- 	PostgreSQL 9.6.2
+-	postgresql-42.0.0.jar (JDBC)
+-	Tomcat 8.5
+
+Setting build path to include tomcat server (in eclipe using add server from the bottom tab)
+ and using/adding jdbc driver in the build path library tab
+ 
+ Java sql database connection in src folder while all other jsp/sql file in webcontent folder
