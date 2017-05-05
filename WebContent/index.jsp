@@ -18,6 +18,7 @@
 				out.println(session.getAttribute("msg"));
 			}
 			else{
+				System.out.println("test");
 		%>
 			<script type="text/javascript"> 
 				alert("No users logged in");
@@ -36,7 +37,6 @@
 			<li><a href="category.jsp" name="cat">Category</a></li>
 			<li><a href="products.jsp" name="prod">Products</a></li>
 			<li><a href="product_browsing.jsp" name="browse">Product Browsing</a></li>
-			<li><a href="product_order.jsp" name="ord">Product Orders</a></li>		
 		</ul>
 	<%
 		}

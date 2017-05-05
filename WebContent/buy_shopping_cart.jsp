@@ -8,6 +8,7 @@
 		<title>Shopping Cart</title>
 		<h3>Shopping Cart</h3>
 		<%
+			
 			Connection connection = SQL_Tables.connect();
 			ResultSet results = null;
 			float totalPrice = 0;
@@ -28,6 +29,8 @@
 		<% } %>
 	</head>
 	<%
+		
+		session.setAttribute("linkPressed", "false");
 		String purchaseButton = request.getParameter("purchaseButton");
 		
 		if(purchaseButton != null){
@@ -60,7 +63,7 @@
 				connection.setAutoCommit(true);
 				
 				session.setAttribute("purchaseDate", date.toString());
-				response.sendRedirect("confirmation.jsp");
+				response.sendRedirect("confirmation.jsp?prevLink=buy_shopping_cart");
 			}
 			else{
 				out.println("<p>Credit Card Information was not inputted</p>");
@@ -114,21 +117,22 @@
 			</form>
 		<%			
 			connection.close();
-			Object userRole = session.getAttribute("roleType");
+			String userRole = (String)session.getAttribute("roleType");
+			System.out.println(userRole);
 			if(userRole != null && userRole.equals("Owner")){
 		%>		
 				<ul>
 					<li><a href="index.jsp">Home</a></li>
 					<li><a href="category.jsp">Category</a></li>
-					<li><a href="product_browsing.jsp">Product Browsing</a></li>
-					<li><a href="product_order.jsp">Product Orders</a></li>		
+					<li><a href="product_browsing.jsp">Product Browsing</a></li>	
+					<li><a href="products.jsp">Products</a></li>		
 				</ul>
 		<%	
 			}
 			else{
 		%>
 				<ul>
-					<li><a href="index.jsp">Home</a></li>		
+					<li><a href="product_browsing.jsp">Product Browsing</a></li>		
 				</ul>
 		<%
 			}

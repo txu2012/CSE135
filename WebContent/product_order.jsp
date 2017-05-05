@@ -8,13 +8,15 @@
 		<title>Product order page</title>
 		<h3>Product Order</h3>
 		<%
+			String prevLink = (String)session.getAttribute("prevLink");
+			
 			Connection connection = SQL_Tables.connect();
 			String newMsg = (String)session.getAttribute("msg");
 			String username = (String)session.getAttribute("user");
 
 			if(newMsg != null){
 		%>
-				<a style="float: right" href="buy_shopping_cart.jsp">Buy Shopping Cart</a>		
+				<a style="float: right" href="buy_shopping_cart.jsp?prevLink=product_order">Buy Shopping Cart</a>		
 		<%
 				PrintWriter writer = response.getWriter();
 				out.println(session.getAttribute("msg"));
@@ -28,8 +30,20 @@
 		
 	</head>
 	<body>
-		<%	}
-			
+		<%		}
+	
+				prevLink = request.getParameter("prevLink");
+
+				System.out.println(prevLink);
+				if(prevLink == null || prevLink.equals("") || (!prevLink.equals("product_browsing") && !prevLink.equals("index") && !prevLink.equals("product_order"))){
+				%>
+					<script type="text/javascript"> 
+						alert("Invalid request");
+						window.location = "product_browsing.jsp?prevLink=product_browsing";
+					</script>
+				<%
+				}
+
 				String getProduct = request.getParameter("productname");
 				
 				String buyButtonAction = request.getParameter("getAction");
@@ -82,7 +96,7 @@
 						while(getAllResults.next()) {
 					%>
 							<tr>
-								<form action="product_order.jsp?productname=<%= getProduct %>" method="POST">
+								<form action="product_order.jsp?prevLink=product_order&productname=<%= getProduct %>" method="POST">
 									<td><input style="border:0; outline:0; overflow:visible" name="getName" value="<%= getAllResults.getString("prodName") %>" readonly></td>
 									<td><input style="border:0; outline:0; overflow:visible" name="getCat" value="<%= getAllResults.getString("category_name") %>" readonly></td>
 									<td><input style="border:0; outline:0; overflow:visible" name="getSKU" value="<%= getAllResults.getString("SKU_Num") %>" readonly></td>
@@ -130,7 +144,8 @@
 		</table>
 		
 		<ul>
-			<li><a href="index.jsp">Home</a></li>	
+			<li><a href="index.jsp?prevLink=product_order">Home</a></li>
+			<li><a href="product_browsing.jsp?prevLink=product_order">Product Browsing</a></li>
 		</ul>
 	</body>
 </html>

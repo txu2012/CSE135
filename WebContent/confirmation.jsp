@@ -8,6 +8,7 @@
 		<title>Confirmation</title>
 		<h3>Confirmation Page</h3>
 		<%
+			
 			Connection connection = SQL_Tables.connect();
 			String purchaseDate = (String)session.getAttribute("purchaseDate");
 			String username = (String)session.getAttribute("user");
@@ -27,6 +28,19 @@
 	<body>
 	<% 
 			}
+			
+			String prevLink = request.getParameter("prevLink");
+
+			System.out.println(prevLink);
+			if(prevLink == null || prevLink.equals("") || !prevLink.equals("buy_shopping_cart")){
+			%>
+				<script type="text/javascript"> 
+					alert("Invalid request");
+					window.location = "product_browsing.jsp";
+				</script>
+			<%
+			}
+				
 			float totalPrice = 0;
 			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM purchased WHERE purchasedUser = '" + username + "' AND purchasedDate = '" + purchaseDate + "';");
 			ResultSet results = pstmt.executeQuery();
@@ -61,7 +75,7 @@
 					<li><a href="index.jsp">Home</a></li>
 					<li><a href="category.jsp">Category</a></li>
 					<li><a href="product_browsing.jsp">Product Browsing</a></li>
-					<li><a href="product_order.jsp">Product Orders</a></li>		
+					<li><a href="products.jsp">Products</a></li>		
 				</ul>
 		<%	
 			}

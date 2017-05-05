@@ -14,7 +14,7 @@
 		Object newMsg = session.getAttribute("msg");
 		if(newMsg != null){
 	%>
-			<a style="float: right" href="buy_shopping_cart.jsp">Buy Shopping Cart</a>		
+			<a style="float: right" href="buy_shopping_cart.jsp?prevLink=product_browsing">Buy Shopping Cart</a>		
 	<%
 			PrintWriter writer = response.getWriter();
 			out.println(session.getAttribute("msg"));
@@ -30,6 +30,7 @@
 	
 	<% 
 		}
+		
 		Statement stmt = connection.createStatement();
 		ResultSet getAllResults = stmt.executeQuery("SELECT catName FROM categories;");
 		
@@ -55,12 +56,12 @@
 	
 	
 	<ul>
-		<li><span><a href="product_browsing.jsp?linkname=All">All</a></span></li>
+		<li><span><a href="product_browsing.jsp?prevLink=product_browsing&linkname=All">All</a></span></li>
 		
 		<% 
       	while(getAllResults.next()){
       	%>
-		<li><span><a href="product_browsing.jsp?linkname=<%=getAllResults.getString("catName")%>"><%= getAllResults.getString("catName")%></a></span></li>
+		<li><span><a href="product_browsing.jsp?prevLink=product_browsing&linkname=<%=getAllResults.getString("catName")%>"><%= getAllResults.getString("catName")%></a></span></li>
       		
       	<%
       	}
@@ -102,7 +103,7 @@
 			while(results.next()){
 				%>
 					<tr>
-						<td><a href="product_order.jsp?productname=<%=results.getString("SKU_Num")%>"><%=results.getString("prodName")%></a></td>
+						<td><a href="product_order.jsp?prevLink=product_browsing&productname=<%=results.getString("SKU_Num")%>"><%=results.getString("prodName")%></a></td>
 						<td><%=results.getString("SKU_Num")%></td>
 						<td><%=results.getString("category_name")%></td>
 						<td><%=results.getString("price")%></td>
@@ -121,10 +122,9 @@
 			if(userRole != null && userRole.equals("Owner")){
 		%>		
 				<ul>
-					<li><a href="index.jsp">Home</a></li>
-					<li><a href="category.jsp">Category</a></li>
-					<li><a href="product_browsing.jsp">Product Browsing</a></li>
-					<li><a href="product_order.jsp">Product Orders</a></li>		
+					<li><a href="index.jsp?prevLink=product_browsing&">Home</a></li>
+					<li><a href="category.jsp?prevLink=product_browsing&">Category</a></li>
+					<li><a href="products.jsp?prevLink=product_browsing&">Products</a></li>
 				</ul>
 		<%	
 			}

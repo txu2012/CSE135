@@ -21,6 +21,7 @@
         	// Code to check for users within database
 			String username = null;
 			String msg = "";
+
 			try{
 				try{
 					username = request.getParameter("username");		
@@ -49,8 +50,7 @@
 						session.setAttribute("user", username);
 						session.setAttribute("roleType", roleType);
 						response.sendRedirect("index.jsp");
-						
-						//return;
+
 					}
 				}
 			}

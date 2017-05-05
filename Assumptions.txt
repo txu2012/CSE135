@@ -1,0 +1,7 @@
+Tony Xu A10447459
+Roland Personius A11643875
+
+Assumptions
+-	After user puts item into shopping cart, price will not change. Users will buy at the price they added to shopping cart.
+-	Shopping cart is assumed to be persistent until bought, not session scoped
+-	Any owner may update/insert/delete products and categories

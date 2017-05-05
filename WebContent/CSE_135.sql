@@ -19,7 +19,6 @@ CREATE TABLE products(
     SKU_Num TEXT UNIQUE,
     category_name TEXT REFERENCES categories(catName),
     price REAL,
-    ownID TEXT REFERENCES users(personName)
     );
     
 CREATE TABLE shoppingCart(

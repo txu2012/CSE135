@@ -8,9 +8,10 @@
 		<title>Category</title>
 		<h3>Category Page</h3>
 		<%
+			
 			Connection connection = SQL_Tables.connect();
-		
 			Object newMsg = session.getAttribute("msg");
+			
 			if(newMsg != null){
 		%>
 				<a style="float: right" href="buy_shopping_cart.jsp">Buy Shopping Cart</a>		
@@ -175,8 +176,7 @@
 		<ul>
 			<li><a href="index.jsp">Home</a></li>
 			<li><a href="products.jsp">Products</a></li>
-			<li><a href="product_browsing.jsp">Product Browsing</a></li>
-			<li><a href="product_order.jsp">Product Orders</a></li>		
+			<li><a href="product_browsing.jsp">Product Browsing</a></li>	
 		</ul>
 	<%
 				connection.close();
@@ -187,6 +187,19 @@
 			}
 		}
 		else{
+			String prevLink = request.getParameter("prevLink");
+
+			System.out.println(prevLink);
+			if(prevLink == null || prevLink.equals("") || (!prevLink.equals("product_order") && !prevLink.equals("product_browsing") && !prevLink.equals("products") && !prevLink.equals("buy_shopping_cart") && !prevLink.equals("confirmation")
+					 && !prevLink.equals("category") && !prevLink.equals("index"))){
+			%>
+				<script type="text/javascript"> 
+					alert("Invalid request");
+					window.location = "index.jsp?prevLink=index";
+				</script>
+			<%
+			}
+			//session.setAttribute("prevLink", "category");
 	%>
 	<p>This page is for owners only!</p>
 	<ul>

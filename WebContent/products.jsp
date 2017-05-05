@@ -14,7 +14,7 @@
 
 			if(newMsg != null){
 		%>
-				<a style="float: right" href="buy_shopping_cart.jsp">Buy Shopping Cart</a>		
+				<a style="float: right" href="buy_shopping_cart.jsp?prevLink=products">Buy Shopping Cart</a>		
 		<%
 				PrintWriter writer = response.getWriter();
 				out.println(session.getAttribute("msg"));
@@ -35,7 +35,7 @@
 			String SKU = "";
 			String category = "";
 			
-			Object userRole = session.getAttribute("roleType");
+			String userRole = (String)session.getAttribute("roleType");
 			if(userRole != null && userRole.equals("Owner")){
 				
 				String getButtonAction = request.getParameter("getAction");
@@ -202,13 +202,13 @@
 		</div>
 		<section style="margin-top: 50px; display:inline-block">
 			<ul>
-				<li><span><a href="products.jsp?linkName=All">All</a></span></li>
+				<li><span><a href="products.jsp?linkName=All&prevLink=products">All</a></span></li>
 			<%
 				Statement stmtLinks = connection.createStatement();
 				ResultSet categoryResults = stmtLinks.executeQuery("SELECT catName FROM categories");
 				while(categoryResults.next()){
 			%>
-					<li><span><a href="products.jsp?linkName=<%=categoryResults.getString("catName")%>"><%= categoryResults.getString("catName")%></a></span></li>
+					<li><span><a href="products.jsp?prevLink=products&linkName=<%=categoryResults.getString("catName")%>"><%= categoryResults.getString("catName")%></a></span></li>
 			<% } 
 				session.setAttribute("cate", request.getParameter("linkName"));
 			%>
@@ -274,14 +274,13 @@
 			</table>
 		</section>
 		<ul>
-			<li><a href="index.jsp">Home</a></li>
-			<li><a href="category.jsp">Category</a></li>
-			<li><a href="product_browsing.jsp">Product Browsing</a></li>
-			<li><a href="product_order.jsp">Product Orders</a></li>		
+			<li><a href="index.jsp?prevLink=products">Home</a></li>
+			<li><a href="category.jsp?prevLink=products">Category</a></li>
+			<li><a href="product_browsing.jsp?prevLink=products">Product Browsing</a></li>	
 		</ul>
 	 	<% } 
 			else{
-				%>
+		%>
 		<p>This page is for owners only!</p>
 		<ul>
 			<li><a href="index.jsp">Home</a></li>
